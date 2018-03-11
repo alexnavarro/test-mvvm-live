@@ -1,6 +1,7 @@
 package br.com.alexandrenavarro.testtrue.network;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -37,8 +38,10 @@ public class TrueBlogClient {
                     } catch (IOException e) {
                         Log.d(TrueBlogClient.class.getSimpleName(), e.getMessage());
                     }
-                    if(!TextUtils.isEmpty(result) && result.length() >=10){
-                        liveData.postValue(Character.toString(result.charAt(9)));
+
+                    if(!TextUtils.isEmpty(result)){
+                        int quantity = result.length()/10;
+                        if(quantity > 0) liveData.postValue(find1OhCharacter(result, 1).toString());
                     }
                 }
             }
@@ -61,16 +64,11 @@ public class TrueBlogClient {
                     } catch (IOException e) {
                         Log.d(TrueBlogClient.class.getSimpleName(), e.getMessage());
                     }
-                    if(!TextUtils.isEmpty(result) && result.length() >=10){
-                        StringBuilder builder = new StringBuilder();
-
-                        for(int i = 0; i < result.length(); i++){
-                            if((i + 1) % 10 == 0){
-                                builder.append(result.charAt(i)).append(" ");
-                            }
+                    if(!TextUtils.isEmpty(result)){
+                        int quantity = result.length()/10;
+                        if(quantity > 0) {
+                            liveData.postValue(find1OhCharacter(result, quantity).toString());
                         }
-
-                        liveData.postValue(builder.toString());
                     }
                 }
             }
@@ -80,6 +78,16 @@ public class TrueBlogClient {
                 Log.d(TrueBlogClient.class.getSimpleName(), t.getMessage());
             }
         });
+    }
+
+    @NonNull
+    private StringBuilder find1OhCharacter(String result, int quantity) {
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = 1; i <= quantity; i++) {
+            builder.append(result.charAt(i * 9)).append(" ");
+        }
+        return builder;
     }
 
     public void countSameWorkOnPage(final MutableLiveData<Map<String, Integer>> liveData){
@@ -93,7 +101,7 @@ public class TrueBlogClient {
                     } catch (IOException e) {
                         Log.d(TrueBlogClient.class.getSimpleName(), e.getMessage());
                     }
-                    if(!TextUtils.isEmpty(result) && result.length() >=10){
+                    if(!TextUtils.isEmpty(result)){
                         Map<String, Integer> count = new HashMap<>();
                         String[] split = result.split("\\s+");
 

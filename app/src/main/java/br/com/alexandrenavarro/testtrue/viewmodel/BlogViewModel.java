@@ -50,7 +50,7 @@ public class BlogViewModel extends AndroidViewModel {
             public void onChanged(@Nullable Map<String, Integer> map) {
                 StringBuilder builder = new StringBuilder();
                 for (Map.Entry<String, Integer> entry : map.entrySet()) {
-                    builder.append(entry.getKey()).append(" total -> ").append(entry.getValue()).append("\n");
+                    builder.append(entry.getKey()).append(" -> ").append(entry.getValue()).append("\n");
                 }
 
                 textRequest3.set(builder.toString());
