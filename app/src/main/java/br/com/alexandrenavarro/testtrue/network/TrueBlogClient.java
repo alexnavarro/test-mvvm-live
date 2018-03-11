@@ -85,7 +85,7 @@ public class TrueBlogClient {
         StringBuilder builder = new StringBuilder();
 
         for (int i = 1; i <= quantity; i++) {
-            builder.append(result.charAt(i * 9)).append(" ");
+            builder.append(result.charAt((i * 10) -1)).append(" ");
         }
         return builder;
     }
