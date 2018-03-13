@@ -40,8 +40,9 @@ public class TrueBlogClient {
                     }
 
                     if(!TextUtils.isEmpty(result)){
-                        int quantity = result.length()/10;
-                        if(quantity > 0) liveData.postValue(find1OhCharacter(result, 1).toString());
+                        if(result.length() >= 10) liveData.postValue(Character.toString(result.charAt(9)));
+                    }else {
+                        liveData.setValue("");
                     }
                 }
             }
@@ -65,9 +66,13 @@ public class TrueBlogClient {
                         Log.d(TrueBlogClient.class.getSimpleName(), e.getMessage());
                     }
                     if(!TextUtils.isEmpty(result)){
-                        int quantity = result.length()/10;
-                        if(quantity > 0) {
-                            liveData.postValue(find1OhCharacter(result, quantity).toString());
+                        if(result.length() >= 10) {
+                            StringBuilder builder = new StringBuilder();
+                            for (int i = 9; i < result.length(); i += 10) {
+                                builder.append(result.charAt(i)).append(" ");
+                            }
+
+                            liveData.postValue(builder.toString());
                         }
                     }
                 }
